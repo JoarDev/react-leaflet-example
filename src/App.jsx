@@ -2,24 +2,30 @@ import { useState } from 'react';
 import './App.css';
 import { MapContainer } from 'react-leaflet/MapContainer';
 import { TileLayer } from 'react-leaflet/TileLayer';
-import { useMapEvents } from 'react-leaflet';
+import { Marker, Popup, useMapEvents } from 'react-leaflet';
 
-function MyComponent({ setLocation }) {
+function MyComponent({ location, setLocation }) {
   useMapEvents({
     click: (e) => {
       console.log('event', e);
       setLocation(e.latlng);
     },
   });
-  return null;
+  return (
+    <Marker position={[location.lat, location.lng]}>
+      <Popup>
+        A pretty CSS3 popup. <br /> Easily customizable.
+      </Popup>
+    </Marker>
+  );
 }
 
 const center = [52.22977, 21.01178];
 
 function App() {
   const [location, setLocation] = useState({
-    lat: 0,
-    lng: 0,
+    lat: 12,
+    lng: 13,
   });
   return (
     <div className="App">
@@ -32,7 +38,7 @@ function App() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <MyComponent setLocation={setLocation} />
+        <MyComponent location={location} setLocation={setLocation} />
       </MapContainer>
     </div>
   );
